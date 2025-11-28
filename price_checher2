@@ -1,0 +1,59 @@
+import requests
+from bs4 import BeautifulSoup
+
+def find_price_amazon(URL):
+    try:
+        headers = {"User-Agent": "Defined"}
+        r = requests.get(URL, headers=headers)
+        soup = BeautifulSoup(r.content, "html.parser")
+        
+        if 'amazon' in URL:
+            price = soup.find('span', {'id': 'priceblock_ourprice'})
+            if price:
+                return price.text.strip()
+            else:
+                return None
+
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
+def find_price_flipkart(URL):
+    try:
+        r = requests.get(URL, headers={"User-Agent": "Defined"})
+        soup = BeautifulSoup(r.content, "html.parser")
+        if 'flipkart' in URL:
+            price = soup.find(class_='_30jeq3 _16Jk6d')
+            return price.text.strip() if price else None
+    except Exception as e:
+        print("An error occurred:", e)
+        return None
+
+URL_amazon = input("Enter the Amazon product URL: ")
+price_amazon = find_price_amazon(URL_amazon)
+if price_amazon is not None:
+    print(f"Price from Amazon: {price_amazon}")
+else:
+    print("Price not found or invalid link for Amazon.")
+
+URL_flipkart = input("Enter the Flipkart product URL: ")
+price_flipkart = find_price_flipkart(URL_flipkart)
+if price_flipkart is not None:
+    print(f"Price from Flipkart: {price_flipkart}")
+else:
+    print("Price not found or invalid link for Flipkart.")
+
+if price_amazon and price_flipkart:
+    try:
+        price_amazon = float(price_amazon.replace('₹', '').replace(',', ''))
+        price_flipkart = float(price_flipkart.replace('₹', '').replace(',', ''))
+        if price_amazon < price_flipkart:
+            print("Amazon price is cheaper.")
+        elif price_amazon > price_flipkart:
+            print("Flipkart price is cheaper.")
+        else:
+            print("Both prices are the same.")
+    except ValueError:
+        print("Error converting prices to numeric values.")
+else:
+    print("Unable to compare prices due to missing price information.")
