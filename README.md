@@ -1,10 +1,5 @@
 # Smart-Price-Comparator
 SmartPriceComparator is a Python-based price tracking and comparison tool that automates product data extraction from Amazon, Flipkart, and Nykaa using Selenium and BeautifulSoup. It collects prices, ratings, reviews, and features, stores them in CSV files, and uses NLP keyword matching to identify the best available deal.
-Below is a **clean, professional, industry-standard README.md** with **no emojis**, no casual wording, no unnecessary decoration — fully suitable for GitHub, resumes, or academic submission.
-
-You can **copy–paste this directly** into your README.md file.
-
----
 
 # Price Comparison and E-Commerce Web Scraping Tool
 
